@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 public class CustomPTransform {
   public static void main(String[] args) {
-    ReadWrite.Options options = PipelineOptionsFactory.fromArgs(args).as(ReadWrite.Options.class);
+    Options options = PipelineOptionsFactory.fromArgs(args).as(Options.class);
     Pipeline p = Pipeline.create(options);
     PCollection<String> lines = p.apply(TextIO.read().from(options.getSourceFile()));
     lines
@@ -43,7 +43,7 @@ public class CustomPTransform {
     public PCollection<Void> expand(PCollection<String> input) {
       // Apply transforms with unique labels
       return input.apply("Count " + this.label, Count.globally())
-          .apply("Print " + label, MapElements.via(new SimpleFunction<>() {
+          .apply("Print " + label, MapElements.via(new SimpleFunction<Long, Void>() {
             @Override
             public Void apply(Long input) {
               System.out.println(input);
@@ -54,11 +54,6 @@ public class CustomPTransform {
   }
 
   public interface Options extends PipelineOptions {
-    @Validation.Required
-    String getOutputFile();
-
-    void setOutputFile(String file);
-
     @Validation.Required
     @Default.String("gs://apache-beam-samples/shakespeare/romeoandjuliet.txt")
     String getSourceFile();

@@ -57,7 +57,7 @@ public class CustomDoFn {
 
   public static class ExtractTimestamp extends DoFn<TableRow, TableRow> {
     @ProcessElement
-    void processElement(ProcessContext context) {
+    public void processElement(ProcessContext context) {
       TableRow tableRow = context.element();
       Instant tripStartTimestamp = Instant.parse((String) tableRow.get("trip_start_timestamp"), DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss z"));//2013-02-09 13:45:00 UTC
       context.outputWithTimestamp(tableRow, tripStartTimestamp);
@@ -66,7 +66,7 @@ public class CustomDoFn {
 
   public static class Print extends DoFn<KV<String, Double>, Void> {
     @ProcessElement
-    void processElement(ProcessContext context, BoundedWindow window) {
+    public void processElement(ProcessContext context, BoundedWindow window) {
       System.out.printf("Window with upper bound %s: %f%n", window.maxTimestamp().toString(), context.element().getValue());
     }
   }

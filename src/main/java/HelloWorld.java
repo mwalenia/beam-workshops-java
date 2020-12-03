@@ -10,7 +10,7 @@ public class HelloWorld {
     PipelineOptions options = PipelineOptionsFactory.fromArgs(args).create();
     Pipeline p = Pipeline.create(options);
     p.apply(Create.of("Hello World!"))
-        .apply(MapElements.via(new SimpleFunction<>() {
+        .apply(MapElements.via(new SimpleFunction<String, Object>() {
           @Override
           public Object apply(String input) {
             System.out.println(input);
