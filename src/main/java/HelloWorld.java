@@ -10,9 +10,9 @@ public class HelloWorld {
     PipelineOptions options = PipelineOptionsFactory.fromArgs(args).create();
     Pipeline p = Pipeline.create(options);
     p.apply(Create.of("Hello World!"))
-        .apply(MapElements.via(new SimpleFunction<String, Object>() {
+        .apply(MapElements.via(new SimpleFunction<String, Void>() {
           @Override
-          public Object apply(String input) {
+          public Void apply(String input) {
             System.out.println(input);
             return null;
           }
